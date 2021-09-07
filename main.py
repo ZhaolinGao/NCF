@@ -35,7 +35,7 @@ if __name__ == '__main__':
 		help="training epoches")
 	parser.add_argument("--factor_num", 
 		type=int,
-		default=64, 
+		default=32, 
 		help="predictive factors numbers in the model")
 	parser.add_argument("--num_layers", 
 		type=int,

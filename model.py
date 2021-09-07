@@ -24,23 +24,21 @@ class NCF(nn.Module):
 
 		self.embed_user_GMF = nn.Embedding(user_num, factor_num)
 		self.embed_item_GMF = nn.Embedding(item_num, factor_num)
-		self.embed_user_MLP = nn.Embedding(
-				user_num, factor_num * (2 ** (num_layers - 1)))
-		self.embed_item_MLP = nn.Embedding(
-				item_num, factor_num * (2 ** (num_layers - 1)))
+		self.embed_user_MLP = nn.Embedding(user_num, factor_num)
+		self.embed_item_MLP = nn.Embedding(item_num, factor_num)
 
 		MLP_modules = []
 		for i in range(num_layers):
-			input_size = factor_num * (2 ** (num_layers - i))
+			input_size = factor_num*2
 			MLP_modules.append(nn.Dropout(p=self.dropout))
-			MLP_modules.append(nn.Linear(input_size, input_size//2))
+			MLP_modules.append(nn.Linear(input_size, input_size))
 			MLP_modules.append(nn.ReLU())
 		self.MLP_layers = nn.Sequential(*MLP_modules)
 
 		if self.model in ['MLP', 'GMF']:
 			predict_size = factor_num 
 		else:
-			predict_size = factor_num * 2
+			predict_size = factor_num * 3
 		self.predict_layer = nn.Linear(predict_size, 1)
 
 		self._init_weight_()
